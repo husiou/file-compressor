@@ -7,11 +7,28 @@ class HuffmanCoding:
     # as a string
     @staticmethod
     def encode(string)->Tuple[HuffmanNode, str]:
-        return
+        pri_queue = HuffmanCoding._generate_priority_queue(string)
+        huff_tree = HuffmanCoding._generate_huffman_tree(pri_queue)
+        char_codes = HuffmanCoding._get_char_codes(huff_tree)
+
+        encoded_string = ""
+        for char in string:
+            encoded_string += char_codes[char]
+        return huff_tree, encoded_string
     # Takes the huffman tree root and the encoded string and decodes the message
     @staticmethod
-    def decode(huffman_tree:HuffmanNode, encoding:str):
-        return
+    def decode(huffman_tree:HuffmanNode, encoding:str)->str:
+        decoded_string = ""
+        cur_node = huffman_tree
+        for num in encoding:
+            if num == "0":
+                cur_node = cur_node.left
+            else:
+                cur_node = cur_node.right
+            if cur_node.left is None and cur_node.right is None:
+                decoded_string += cur_node.value
+                cur_node = huffman_tree
+        return decoded_string
     # Builds a priority queue from the characters in the input_string, where the priority is
     # based on how many times a character appears. Smaller counts should come off the pqueue first.
     @staticmethod
